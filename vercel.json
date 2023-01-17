@@ -2,10 +2,10 @@
     "name": "controle-gastos-backend",
     "version": 1,
     "public": true,
-    "build": {
+    "builds": [{
         "src": "bin/index.js",
         "use": "@vercel/node"
-    },
+    }],
     "routes": [
         {
             "src": "/(.*)",
