@@ -35,8 +35,6 @@ import { DeleteEarnController } from './controllers/earn/DeleteEarnController';
 
 const router = Router();
 
-const upload = multer(uploadConfig.upload("./tmp"));
-
 //-- ROTAS USER --
 router.post('/users', new CreateUserController().handle)
 router.post('/session', new AuthUserController().handle)
