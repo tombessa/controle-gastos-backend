@@ -3,13 +3,13 @@
     "version": 1,
     "public": true,
     "builds": [{
-        "src": "bin/index.js",
+        "src": "bin/server.js",
         "use": "@vercel/node"
     }],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "bin/index.js"
+            "dest": "bin/server.js"
         }
     ]
 }
