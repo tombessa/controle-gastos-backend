@@ -83,10 +83,11 @@ class ListCategoryService{
       where:{
       },
       select:{
-        id: true,
+        id: true,        
         name: true,
         expense: true,
-        includeGoal: true
+        includeGoal: true,
+        priority: true
       }
     };
     query.where = {...query.where, created_by:created_by};
