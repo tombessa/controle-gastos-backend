@@ -34,6 +34,7 @@ class ListCategoryService{
       where:{
       },
       include:{
+        priority: true,
         goalPeriods: true
       }
     };
@@ -41,8 +42,8 @@ class ListCategoryService{
     if(id!==undefined) query.where = {...query.where, id:id};
     if(name!==undefined) query.where = {...query.where, name:name};
     if(expense!==undefined) query.where = {...query.where, expense:expense};
-    if(includeGoal!==undefined) query.where = {...query.where, expense:includeGoal};
-    if(priority!==undefined) query.where = {...query.where, expense:priority};
+    if(includeGoal!==undefined) query.where = {...query.where, includeGoal:includeGoal};
+    if(priority!==undefined) query.where = {...query.where, priority:priority};
     if(!period) throw new Error('Period invalid');
     /*Filter Period*/
     let period_id_filtered;
@@ -86,16 +87,16 @@ class ListCategoryService{
         id: true,        
         name: true,
         expense: true,
-        includeGoal: true,
-        priority: true
+        priority: true,
+        includeGoal: true        
       }
     };
     query.where = {...query.where, created_by:created_by};
     if(id!==undefined) query.where = {...query.where, id:id};
     if(name!==undefined) query.where = {...query.where, name:name};
     if(expense!==undefined) query.where = {...query.where, expense:expense};
-    if(includeGoal!==undefined) query.where = {...query.where, expense:includeGoal};
-    if(priority!==undefined) query.where = {...query.where, expense:priority};
+    if(includeGoal!==undefined) query.where = {...query.where, includeGoal:includeGoal};
+    if(priority!==undefined) query.where = {...query.where, priority:priority};
 
     const category = await prismaClient.category.findMany(query);
     return category;
