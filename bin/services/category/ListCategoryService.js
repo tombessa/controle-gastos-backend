@@ -81,14 +81,7 @@ class ListCategoryService {
         return __awaiter(this, void 0, void 0, function* () {
             let query = {
                 where: {},
-                orderBy: { priority: 'asc' },
-                include: {
-                    id: true,
-                    name: true,
-                    expense: true,
-                    priority: true,
-                    includeGoal: true
-                },
+                orderBy: { priority: 'asc' }
             };
             query.where = Object.assign(Object.assign({}, query.where), { created_by: created_by });
             if (id !== undefined)
