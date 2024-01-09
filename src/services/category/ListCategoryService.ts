@@ -36,7 +36,8 @@ class ListCategoryService{
       include:{
         priority: true,
         goalPeriods: true
-      }
+      },
+      orderBy : {priority: 'asc'}
     };
     query.where = {...query.where, created_by:created_by};
     if(id!==undefined) query.where = {...query.where, id:id};
@@ -89,7 +90,8 @@ class ListCategoryService{
         expense: true,
         priority: true,
         includeGoal: true        
-      }
+      },
+      orderBy : {priority: 'asc'}
     };
     query.where = {...query.where, created_by:created_by};
     if(id!==undefined) query.where = {...query.where, id:id};
