@@ -67,7 +67,9 @@ router.get('/goal', isAuthenticated, new ListGoalController().handle )
 //-- ROTAS GOAL PERIOD
 router.post('/goalPeriod', isAuthenticated, new CreateGoalPeriodController().handle )
 router.patch('/goalPeriod', isAuthenticated, new UpdateGoalPeriodController().handle )
+router.patch('/goalPeriod/limited', isAuthenticated, new UpdateGoalPeriodController().handle2 )
 router.get('/goalPeriod', isAuthenticated, new ListGoalPeriodController().handle )
+
 
 //-- ROTAS EXPENSE
 router.post('/expense', isAuthenticated, new CreateExpenseController().handle )

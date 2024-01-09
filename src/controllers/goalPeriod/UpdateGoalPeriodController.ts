@@ -15,6 +15,22 @@ class UpdateGoalPeriodController{
     return res.json(goalPeriod);
 
   }
+
+
+  async handle2(req: Request, res: Response){
+    const { amount, category_id, period} = req.body;
+
+    const user_id = req.user_id as string;
+    const updated_by = user_id;
+
+
+    const updateGoalPeriodService = new UpdateGoalPeriodService();
+
+    const goalPeriod = await updateGoalPeriodService.execute2({ amount, category_id, period, updated_by});
+
+    return res.json(goalPeriod);
+  }
+
 }
 
 export { UpdateGoalPeriodController }
