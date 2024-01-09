@@ -22,5 +22,15 @@ class UpdateGoalPeriodController {
             return res.json(goalPeriod);
         });
     }
+    handle2(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { amount, category_id, period } = req.body;
+            const user_id = req.user_id;
+            const updated_by = user_id;
+            const updateGoalPeriodService = new UpdateGoalPeriodService_1.UpdateGoalPeriodService();
+            const goalPeriod = yield updateGoalPeriodService.execute2({ amount, category_id, period, updated_by });
+            return res.json(goalPeriod);
+        });
+    }
 }
 exports.UpdateGoalPeriodController = UpdateGoalPeriodController;

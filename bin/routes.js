@@ -59,6 +59,7 @@ router.get('/goal', isAuthenticated_1.isAuthenticated, new ListGoalController_1.
 //-- ROTAS GOAL PERIOD
 router.post('/goalPeriod', isAuthenticated_1.isAuthenticated, new CreateGoalPeriodController_1.CreateGoalPeriodController().handle);
 router.patch('/goalPeriod', isAuthenticated_1.isAuthenticated, new UpdateGoalPeriodController_1.UpdateGoalPeriodController().handle);
+router.patch('/goalPeriod/limited', isAuthenticated_1.isAuthenticated, new UpdateGoalPeriodController_1.UpdateGoalPeriodController().handle2);
 router.get('/goalPeriod', isAuthenticated_1.isAuthenticated, new ListGoalPeriodController_1.ListGoalPeriodController().handle);
 //-- ROTAS EXPENSE
 router.post('/expense', isAuthenticated_1.isAuthenticated, new CreateExpenseController_1.CreateExpenseController().handle);
