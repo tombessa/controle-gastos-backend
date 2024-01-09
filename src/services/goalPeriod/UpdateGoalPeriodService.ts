@@ -30,25 +30,28 @@ class UpdateGoalPeriodService{
     const listPeriodService = new ListPeriodService()
     let lPeriod = await listPeriodService.findFirst({id: undefined, month: period.month, year: period.year, created_by: updated_by});
 
-    const goalPeriod = await prismaClient.goalPeriod.update({
-      where:{
-        period_id: period.id,
-        category_id: category_id,
-      },
-      data:{
-        amount: amount,
-        updated_at: new Date()
-      },
-      select:{
-        id: true,
-        amount: true,
-        period_id: true,
-        category_id: true
-      }
-    })
+    if(lPeriod.id){
+      const goalPeriod = await prismaClient.goalPeriod.update({
+        where:{
+          period_id: lPeriod.id,
+          category_id: category_id,
+        },
+        data:{
+          amount: amount,
+          updated_at: new Date()
+        },
+        select:{
+          id: true,
+          amount: true,
+          period_id: true,
+          category_id: true
+        }
+      })
 
 
-    return goalPeriod;
+      return goalPeriod;
+    }
+    return null;
   }
 
   async execute({ id, amount, category_id, period_id,  updated_by}: GoalPeriodRequest){
