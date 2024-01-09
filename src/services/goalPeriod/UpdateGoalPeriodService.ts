@@ -1,8 +1,6 @@
-import internal from "stream";
 import prismaClient from "../../prisma";
-import {ExpenseResumeAccountRequest} from "../expense/ListExpenseService";
-import {EarnResumeAccountRequest} from "../earn/ListEarnService";
-import {ListPeriodService, PeriodRequest} from "../period/ListPeriodService";
+import {PeriodRequest} from "../period/ListPeriodService";
+import {ListGoalPeriodService} from "./ListGoalPeriodService";
 
 interface GoalPeriodRequest{
   id: string,
@@ -27,14 +25,22 @@ class UpdateGoalPeriodService{
     if(period.month===undefined)throw new Error('Period Month invalid')
     if(period.year===undefined)throw new Error('Period Year invalid')
 
-    const listPeriodService = new ListPeriodService()
-    let lPeriod = await listPeriodService.findFirst({id: undefined, month: period.month, year: period.year, created_by: updated_by});
+    let goalPeriods = await (new ListGoalPeriodService()).execute({
+      id:undefined,
+      amount,
+      category_id,
+      period_id:undefined,
+      amount_compare:"=",
+      period,
+      period_compare:undefined,
+      category:undefined,
+      created_by: updated_by
+    })
 
-    if(lPeriod.id){
+    if(goalPeriods.length>0){
       const goalPeriod = await prismaClient.goalPeriod.update({
         where:{
-          period_id: lPeriod.id,
-          category_id: category_id,
+          id: goalPeriods(0).id
         },
         data:{
           amount: amount,
@@ -47,11 +53,9 @@ class UpdateGoalPeriodService{
           category_id: true
         }
       })
-
-
       return goalPeriod;
     }
-    return null;
+    throw new Error('Goal Period not exists')
   }
 
   async execute({ id, amount, category_id, period_id,  updated_by}: GoalPeriodRequest){

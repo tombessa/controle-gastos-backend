@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateGoalPeriodService = void 0;
 const prisma_1 = __importDefault(require("../../prisma"));
-const ListPeriodService_1 = require("../period/ListPeriodService");
+const ListGoalPeriodService_1 = require("./ListGoalPeriodService");
 class UpdateGoalPeriodService {
     execute2({ amount, category_id, period, updated_by }) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -26,13 +26,21 @@ class UpdateGoalPeriodService {
                 throw new Error('Period Month invalid');
             if (period.year === undefined)
                 throw new Error('Period Year invalid');
-            const listPeriodService = new ListPeriodService_1.ListPeriodService();
-            let lPeriod = yield listPeriodService.findFirst({ id: undefined, month: period.month, year: period.year, created_by: updated_by });
-            if (lPeriod.id) {
+            let goalPeriods = yield (new ListGoalPeriodService_1.ListGoalPeriodService()).execute({
+                id: undefined,
+                amount,
+                category_id,
+                period_id: undefined,
+                amount_compare: "=",
+                period,
+                period_compare: undefined,
+                category: undefined,
+                created_by: updated_by
+            });
+            if (goalPeriods.length > 0) {
                 const goalPeriod = yield prisma_1.default.goalPeriod.update({
                     where: {
-                        period_id: lPeriod.id,
-                        category_id: category_id,
+                        id: goalPeriods(0).id
                     },
                     data: {
                         amount: amount,
@@ -47,7 +55,7 @@ class UpdateGoalPeriodService {
                 });
                 return goalPeriod;
             }
-            return null;
+            throw new Error('Goal Period not exists');
         });
     }
     execute({ id, amount, category_id, period_id, updated_by }) {
