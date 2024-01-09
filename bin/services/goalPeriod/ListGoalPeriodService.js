@@ -97,6 +97,7 @@ class ListGoalPeriodService {
                         query.where = Object.assign(Object.assign({}, query.where), { period: Object.assign(Object.assign({}, period), { month: period.month }) });
                 }
             }
+            console.log(query);
             const goalPeriod = yield prisma_1.default.goalPeriod.findMany(query);
             return goalPeriod;
         });

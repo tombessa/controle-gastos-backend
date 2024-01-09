@@ -124,7 +124,7 @@ class ListGoalPeriodService{
         }
       }
     }
-    
+    console.log(query)
     const goalPeriod = await prismaClient.goalPeriod.findMany(query);
     
     return goalPeriod;
