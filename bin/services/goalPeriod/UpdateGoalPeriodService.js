@@ -27,18 +27,18 @@ class UpdateGoalPeriodService {
                 throw new Error('Period Month invalid');
             if (period.year === undefined)
                 throw new Error('Period Year invalid');
-            let lPeriod = yield (new ListPeriodService_1.ListPeriodService()).execute({ created_by: updated_by, month: period.month, year: period.year });
-            if (lPeriod.length > 0) {
+            let periods = yield (new ListPeriodService_1.ListPeriodService()).execute({ created_by: updated_by, month: period.month, year: period.year });
+            if (periods.length > 0) {
                 let goalPeriods = yield (new ListGoalPeriodService_1.ListGoalPeriodService()).execute({
                     amount,
                     category_id,
-                    period_id: lPeriod(0).id,
+                    period_id: periods[0].id,
                     created_by: updated_by
                 });
                 if (goalPeriods.length > 0) {
                     const goalPeriod = yield prisma_1.default.goalPeriod.update({
                         where: {
-                            id: goalPeriods(0).id
+                            id: goalPeriods[0].id
                         },
                         data: {
                             amount: amount,

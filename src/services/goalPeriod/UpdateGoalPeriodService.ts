@@ -26,20 +26,20 @@ class UpdateGoalPeriodService{
     if(period.year===undefined)throw new Error('Period Year invalid')
 
 
-    let lPeriod = await (new ListPeriodService()).execute({created_by: updated_by, month: period.month, year: period.year});
+    let periods = await (new ListPeriodService()).execute({created_by: updated_by, month: period.month, year: period.year});
 
-    if(lPeriod.length>0){
+    if(periods.length>0){
       let goalPeriods = await (new ListGoalPeriodService()).execute({
         amount,
         category_id,
-        period_id: lPeriod(0).id,
+        period_id: periods[0].id,
         created_by: updated_by
       })
 
       if(goalPeriods.length>0){
         const goalPeriod = await prismaClient.goalPeriod.update({
           where:{
-            id: goalPeriods(0).id
+            id: goalPeriods[0].id
           },
           data:{
             amount: amount,
