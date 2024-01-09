@@ -84,7 +84,14 @@ class ListCategoryService{
     let query = {
       where:{
       },
-      orderBy : {priority: 'asc'}
+      orderBy : {priority: 'asc'},
+      include:{
+        id: true,
+        name: true,
+        expense: true,
+        priority: true,
+        includeGoal: true
+      },
     };
     query.where = {...query.where, created_by:created_by};
     if(id!==undefined) query.where = {...query.where, id:id};

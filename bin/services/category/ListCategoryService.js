@@ -23,8 +23,10 @@ class ListCategoryService {
             let query = {
                 where: {},
                 include: {
+                    priority: true,
                     goalPeriods: true
-                }
+                },
+                orderBy: { priority: 'asc' }
             };
             query.where = Object.assign(Object.assign({}, query.where), { created_by: created_by });
             if (id !== undefined)
@@ -34,9 +36,9 @@ class ListCategoryService {
             if (expense !== undefined)
                 query.where = Object.assign(Object.assign({}, query.where), { expense: expense });
             if (includeGoal !== undefined)
-                query.where = Object.assign(Object.assign({}, query.where), { expense: includeGoal });
+                query.where = Object.assign(Object.assign({}, query.where), { includeGoal: includeGoal });
             if (priority !== undefined)
-                query.where = Object.assign(Object.assign({}, query.where), { expense: priority });
+                query.where = Object.assign(Object.assign({}, query.where), { priority: priority });
             if (!period)
                 throw new Error('Period invalid');
             /*Filter Period*/
@@ -79,12 +81,14 @@ class ListCategoryService {
         return __awaiter(this, void 0, void 0, function* () {
             let query = {
                 where: {},
-                select: {
+                orderBy: { priority: 'asc' },
+                include: {
                     id: true,
                     name: true,
                     expense: true,
+                    priority: true,
                     includeGoal: true
-                }
+                },
             };
             query.where = Object.assign(Object.assign({}, query.where), { created_by: created_by });
             if (id !== undefined)
@@ -94,9 +98,9 @@ class ListCategoryService {
             if (expense !== undefined)
                 query.where = Object.assign(Object.assign({}, query.where), { expense: expense });
             if (includeGoal !== undefined)
-                query.where = Object.assign(Object.assign({}, query.where), { expense: includeGoal });
+                query.where = Object.assign(Object.assign({}, query.where), { includeGoal: includeGoal });
             if (priority !== undefined)
-                query.where = Object.assign(Object.assign({}, query.where), { expense: priority });
+                query.where = Object.assign(Object.assign({}, query.where), { priority: priority });
             const category = yield prisma_1.default.category.findMany(query);
             return category;
         });
