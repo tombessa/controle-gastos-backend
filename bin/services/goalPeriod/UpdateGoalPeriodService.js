@@ -14,7 +14,50 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateGoalPeriodService = void 0;
 const prisma_1 = __importDefault(require("../../prisma"));
+const ListPeriodService_1 = require("../period/ListPeriodService");
+const ListGoalPeriodService_1 = require("./ListGoalPeriodService");
 class UpdateGoalPeriodService {
+    execute2({ amount, category_id, period, updated_by }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (amount === undefined)
+                throw new Error('Amount invalid');
+            if (period === undefined)
+                throw new Error('Period invalid');
+            if (period.month === undefined)
+                throw new Error('Period Month invalid');
+            if (period.year === undefined)
+                throw new Error('Period Year invalid');
+            let periods = yield (new ListPeriodService_1.ListPeriodService()).execute({ created_by: updated_by, month: period.month, year: period.year });
+            if (periods.length > 0) {
+                let goalPeriods = yield (new ListGoalPeriodService_1.ListGoalPeriodService()).execute({
+                    amount,
+                    category_id,
+                    period_id: periods[0].id,
+                    created_by: updated_by
+                });
+                if (goalPeriods.length > 0) {
+                    const goalPeriod = yield prisma_1.default.goalPeriod.update({
+                        where: {
+                            id: goalPeriods[0].id
+                        },
+                        data: {
+                            amount: amount,
+                            updated_at: new Date()
+                        },
+                        select: {
+                            id: true,
+                            amount: true,
+                            period_id: true,
+                            category_id: true
+                        }
+                    });
+                    return goalPeriod;
+                }
+                throw new Error('Goal Period not exists');
+            }
+            throw new Error('Period not exists');
+        });
+    }
     execute({ id, amount, category_id, period_id, updated_by }) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!id)
