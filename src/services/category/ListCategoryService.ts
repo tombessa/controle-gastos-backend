@@ -65,14 +65,17 @@ class ListCategoryService{
     const periodSumEarn = await new ListEarnService().resume({period, created_by});
     periodSumExpense.forEach(item => periodSum.push(item));
     periodSumEarn.forEach(item => periodSum.push(item));
-    console.log(query)
+
+    // @ts-ignore
     const categorySearch = await prismaClient.category.findMany(query);
     let categoryReturn = [];
     categorySearch.forEach(item=>{
+      // @ts-ignore
       item.goalPeriods = item.goalPeriods.filter(t => t.period_id === period_id_filtered);
       let periodSumList = periodSum.filter(sum => sum.category_id===item.id);
       let periodSumItem={amount:0, total: 0};
       if(periodSumList) if(periodSumList.length>0) periodSumItem = {...periodSumItem, amount: periodSumList[0]._sum.value};
+      // @ts-ignore
       if(item.goalPeriods) if(item.goalPeriods.length>0) periodSumItem = {...periodSumItem, total: item.goalPeriods[0].amount};
       
       categoryReturn.push({...item, periodSumItem});
@@ -95,6 +98,7 @@ class ListCategoryService{
     if(includeGoal!==undefined) query.where = {...query.where, includeGoal:includeGoal};
     if(priority!==undefined) query.where = {...query.where, priority:priority};
 
+    // @ts-ignore
     const category = await prismaClient.category.findMany(query);
     return category;
 

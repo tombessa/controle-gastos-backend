@@ -23,7 +23,6 @@ class ListCategoryService {
             let query = {
                 where: {},
                 include: {
-                    priority: true,
                     goalPeriods: true
                 },
                 orderBy: { priority: 'asc' }
@@ -60,15 +59,18 @@ class ListCategoryService {
             const periodSumEarn = yield new ListEarnService_1.ListEarnService().resume({ period, created_by });
             periodSumExpense.forEach(item => periodSum.push(item));
             periodSumEarn.forEach(item => periodSum.push(item));
+            // @ts-ignore
             const categorySearch = yield prisma_1.default.category.findMany(query);
             let categoryReturn = [];
             categorySearch.forEach(item => {
+                // @ts-ignore
                 item.goalPeriods = item.goalPeriods.filter(t => t.period_id === period_id_filtered);
                 let periodSumList = periodSum.filter(sum => sum.category_id === item.id);
                 let periodSumItem = { amount: 0, total: 0 };
                 if (periodSumList)
                     if (periodSumList.length > 0)
                         periodSumItem = Object.assign(Object.assign({}, periodSumItem), { amount: periodSumList[0]._sum.value });
+                // @ts-ignore
                 if (item.goalPeriods)
                     if (item.goalPeriods.length > 0)
                         periodSumItem = Object.assign(Object.assign({}, periodSumItem), { total: item.goalPeriods[0].amount });
@@ -94,6 +96,7 @@ class ListCategoryService {
                 query.where = Object.assign(Object.assign({}, query.where), { includeGoal: includeGoal });
             if (priority !== undefined)
                 query.where = Object.assign(Object.assign({}, query.where), { priority: priority });
+            // @ts-ignore
             const category = yield prisma_1.default.category.findMany(query);
             return category;
         });
