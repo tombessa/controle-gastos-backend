@@ -32,9 +32,10 @@ class ListCategoryService{
   async resume({ id, name, expense, includeGoal, priority, period, created_by}: CategoryResumeRequest){
     let query = {
       where:{
+
       },
       include:{
-        priority: true,
+
         goalPeriods: true
       }
     };
@@ -63,6 +64,7 @@ class ListCategoryService{
     const periodSumEarn = await new ListEarnService().resume({period, created_by});
     periodSumExpense.forEach(item => periodSum.push(item));
     periodSumEarn.forEach(item => periodSum.push(item));
+    console.log(query)
     const categorySearch = await prismaClient.category.findMany(query);
     let categoryReturn = [];
     categorySearch.forEach(item=>{
